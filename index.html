@@ -8,7 +8,11 @@
 	<body>
 		<div class="box">
 			<div class="movelist">
-				<img class="item" src="img/8a296bd53f6685b3147d370b27267789.jpg" />
+				<img class="item" style="transform:translate3d(0,0,0);z-index:4;" src="img/8a296bd53f6685b3147d370b27267789.jpg" />
+				<img class="item" style="transform:translate3d(0,0,-60px);z-index:3;" src="img/8a3dc7e6d341f2f1a8ab6a8a7a8ea069.jpg" />
+				<img class="item" style="transform:translate3d(0,0,-120px);z-index:2;" src="img/8a63dd7d75a731ade9c38e5b54d8ab24.jpg" />
+				<img class="item" style="transform:translate3d(0,0,-180px);z-index:1;" src="img/8b782fe0a0a1a9b19162a5a796c9784b.jpg" />
+				
 			</div>
 		</div>
 		<script>
@@ -28,7 +32,7 @@
 			}
 			
 			var item = document.querySelector(".movelist");
-			item.addEventListener("mousedown",bindItem);
+			item.addEventListener("mouseover",bindItem);
 			
 			function bindItem(ev){
 				var e = window.event||ev;
@@ -37,22 +41,51 @@
 				var starY = 0;
 				var mx = 0;
 				var my = 0;
+				var stepX = 0;
+				var stepY = 0;
 				var target = e.target||e.srcElement;
 				if(target.className=="item"){
-					forbidenDefaul(e);
-					starX = e.clientX;
-					starY = e.clientY;
-					// var ox = target.offsetLeft;
-					// var oy = target.offsetTop;
-					console.log(starX+"--"+starY);
-					// console.log(ox+"--"+oy);
-					target.onmousemove = function(e){
+					target.onmousedown = function(e){
 						var e = window.event||ev;
-						forbidenDefaul(e);
-						mx = e.clientX;
-						my = e.clientY;
-						console.log((starX-mx)+"--"+(starY-my));
-						target.style.transform = "translate("+(mx-starX)+"px,"+(my-starY)+"px)";
+						stopProp(e);
+						target.className="item";
+						starX = e.clientX;
+						starY = e.clientY;
+						// var ox = target.offsetLeft;
+						// var oy = target.offsetTop;
+						console.log(starX+"--"+starY);
+						// console.log(ox+"--"+oy);
+						target.onmousemove = function(e){
+							var e = window.event||ev;
+							forbidenDefaul(e);
+							mx = e.clientX;
+							my = e.clientY;
+							// console.log((starX-mx)+"--"+(starY-my));
+							target.style.transform = "translate3D("+(mx-starX)+"px,"+(my-starY)+"px,0)";
+							stepX = mx-starX;
+							stepY = my-starY;
+							target.style.opacity = (1-parseFloat(Math.abs(stepX)/480).toFixed(1));
+						}
+						target.onmouseup=function(e){
+							target.onmousemove = null;
+							var e = window.event||ev;
+							if(stepX>=120){
+								target.className="item move";
+								target.style.transform = "translate3D(240px,0,0)";
+								target.style.opacity = "0";
+								target.parentNode.removeChild(target);
+							}else if(stepX<=-120){
+								target.className="item move";
+								target.style.transform = "translate3D(-240px,0,0)";
+								target.style.opacity = "0";
+								target.parentNode.removeChild(target);
+							}else{
+								target.className="item move";
+								target.style.transform = "translate3D(0,0,0)";
+								target.style.opacity = "1";
+							}
+							
+						}
 					}
 				}
 			}
