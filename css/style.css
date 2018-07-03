@@ -30,12 +30,24 @@ body{
 	padding:60px 0 20px;
 }
 .box .movelist{
+	position: relative;
 	width:400px;
+	height: 250px;
 	margin:0 auto;
+	perspective: 1000px; //子元素视距
+    perspective-origin: 50% 150%; //子元素透视位置
+    -webkit-perspective: 1000px;
+    -webkit-perspective-origin: 50% 150%;
 	/*overflow: hidden;*/
 }
 .box .movelist .item{
+	position: absolute;
 	cursor: pointer;
 	width: 100%;
+	height: 100%;
+	opacity:1;
 	/*transform: translate(300px,);*/
+}
+.box .movelist .item.move{
+	transition:all 0.2s linear;
 }
