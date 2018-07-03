@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	</head>
+	<body>
+		<div class="box">
+			<div class="movelist">
+				<img class="item" src="img/8a296bd53f6685b3147d370b27267789.jpg" />
+			</div>
+		</div>
+		<script>
+			function forbidenDefaul(e){
+				if(e.preventDefault){
+					e.preventDefault();
+				}else{
+					e.event.returnValue=false;
+				}
+			}
+			function stopProp(e){
+				if(e.stopPropagation){
+					e.stopPropagation();
+				}else{
+					e.event.cancelBubble=true;
+				}
+			}
+			
+			var item = document.querySelector(".movelist");
+			item.addEventListener("mousedown",bindItem);
+			
+			function bindItem(ev){
+				var e = window.event||ev;
+				stopProp(e);
+				var starX = 0;
+				var starY = 0;
+				var mx = 0;
+				var my = 0;
+				var target = e.target||e.srcElement;
+				if(target.className=="item"){
+					forbidenDefaul(e);
+					starX = e.clientX;
+					starY = e.clientY;
+					// var ox = target.offsetLeft;
+					// var oy = target.offsetTop;
+					console.log(starX+"--"+starY);
+					// console.log(ox+"--"+oy);
+					target.onmousemove = function(e){
+						var e = window.event||ev;
+						forbidenDefaul(e);
+						mx = e.clientX;
+						my = e.clientY;
+						console.log((starX-mx)+"--"+(starY-my));
+						target.style.transform = "translate("+(mx-starX)+"px,"+(my-starY)+"px)";
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
